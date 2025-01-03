@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Step Conversion Calculator</title>
+  
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  
+  <!-- Bootstrap Icons (optional for extra visual flair) -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css"
+  />
+  
+  <!-- Google Fonts (Poppins for a modern look) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  
+  <!-- Custom CSS -->
+  <style>
+    :root {
+      --dark-bg: #121212;      /* Main background color */
+      --dark-card-bg: #1f1f1f; /* Card background color */
+      --red-accent: #ff4747;   /* Main accent color (red) */
+      --text-color: #ffffff;   /* Primary text color on dark background */
+    }
+
+    /* Global Styles */
+    body {
+      background: linear-gradient(135deg, #2a0000 0%, var(--dark-bg) 80%);
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-color);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Override for Bootstrap’s .text-muted to ensure visibility on dark backgrounds */
+    .text-muted {
+      color: #ccc !important;
+    }
+
+    /* Navbar Styling */
+    .navbar {
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .navbar-brand {
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--red-accent) !important;
+    }
+    .navbar-brand:hover {
+      color: #ff6161 !important;
+    }
+
+    /* Card Container */
+    .card {
+      border: none;
+      border-radius: 1rem;
+      overflow: hidden;
+      background-color: var(--dark-card-bg);
+      animation: fadeIn 1s ease;
+      color: var(--text-color);
+    }
+    .card-body {
+      padding: 2rem;
+    }
+
+    /* Headings */
+    h1 {
+      font-weight: 600;
+      color: var(--red-accent);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Form Controls */
+    label.form-label {
+      font-weight: 500;
+    }
+    .form-control,
+    .form-select {
+      border-radius: 0.5rem;
+      background-color: #2b2b2b;
+      border: 1px solid #3a3a3a;
+      color: var(--text-color);
+    }
+    .form-control::placeholder {
+      color: #999;
+    }
+
+    /* Button */
+    #calculateButton {
+      border-radius: 30px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      background-color: var(--red-accent);
+      border: none;
+      transition: all 0.2s ease;
+      color: #fff;
+    }
+    #calculateButton:hover {
+      background-color: #ff6161;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 71, 71, 0.3);
+    }
+
+    /* Alert (Result) */
+    .alert {
+      border-radius: 0.5rem;
+      font-weight: 500;
+      background-color: #2b2b2b;
+      border: 1px solid var(--red-accent);
+      color: #fff;
+    }
+
+    /* Fade-in animation for the card */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Custom scrollbar (optional) */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #555;
+      border-radius: 8px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: #666;
+    }
+  </style>
+
+  <!-- Your script for calculations -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <!-- Navigation Bar (Optional) -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-heart-pulse me-2"></i>Converter
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content Container -->
+  <div class="container py-5">
+    <h1 class="text-center mb-4">Cycling to Steps  Conversion Calculator</h1>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow">
+          <div class="card-body">
+            <form id="stepCalculatorForm">
+              <!-- Distance Unit -->
+              <div class="mb-3">
+                <label for="distanceUnit" class="form-label">
+                  <i class="bi bi-rulers me-1"></i>
+                  Select Distance Unit
+                </label>
+                <select class="form-select" id="distanceUnit">
+                  <option value="km" selected>Kilometers</option>
+                  <option value="miles">Miles</option>
+                </select>
+              </div>
+
+              <!-- Distance -->
+              <div class="mb-3">
+                <label for="distance" class="form-label">
+                  <i class="bi bi-map me-1"></i>
+                  Distance
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="distance"
+                  min="0"
+                  placeholder="Enter distance"
+                />
+              </div>
+
+              <!-- Duration -->
+              <div class="mb-3">
+                <label for="duration" class="form-label">
+                  <i class="bi bi-clock-history me-1"></i>
+                  Duration (minutes)
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="duration"
+                  min="0"
+                  placeholder="Enter duration"
+                />
+              </div>
+
+              <!-- Calories -->
+              <div class="mb-3">
+                <label for="calories" class="form-label">
+                  <i class="bi bi-fire me-1"></i>
+                  Calories Burned
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="calories"
+                  min="0"
+                  placeholder="Enter calories burned"
+                />
+              </div>
+
+              <!-- Intensity -->
+              <div class="mb-3">
+                <label for="intensity" class="form-label">
+                  <i class="bi bi-lightning-fill me-1"></i>
+                  Cycling Intensity
+                </label>
+                <select class="form-select" id="intensity">
+                  <option value="light">Light</option>
+                  <option value="moderate" selected>Moderate</option>
+                  <option value="intense">Intense</option>
+                </select>
+                <!-- The text below now appears in lighter color -->
+                <small class="form-text text-muted">
+                  Select the intensity of your cycling activity.
+                </small>
+              </div>
+
+              <div class="text-center">
+                <button
+                  type="button"
+                  class="btn"
+                  id="calculateButton"
+                >
+                  Calculate Steps
+                </button>
+              </div>
+            </form>
+            <p class="mt-3 text-muted"></p>
+          </div>
+        </div>
+        <div class="mt-4" id="resultContainer" style="display: none;">
+          <div class="alert" id="resultMessage"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bootstrap JavaScript + dependencies -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js">
+  </script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+  </script>
+</body>
+</html>
